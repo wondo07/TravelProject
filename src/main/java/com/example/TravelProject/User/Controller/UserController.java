@@ -42,6 +42,7 @@ public class UserController {
         return new ResponseEntity<>(pageResponseDto, HttpStatus.OK);
     }
 
+
     @PatchMapping("/{userId}")
     private ResponseEntity patch(@RequestBody UserPatchDto userPatchDto,
                                  @PathVariable("userId") Long userId){
@@ -50,4 +51,13 @@ public class UserController {
 
         return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
     }
+
+    @DeleteMapping("/{userId}")
+    private ResponseEntity delete(@PathVariable("userId") Long userId){
+
+        userService.delete(userId);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

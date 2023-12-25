@@ -34,7 +34,8 @@ public class UserService {
     }
 
     public UserResponseDto get(Long userId) {
-        return toResponseDto(verifiedUser(userId));
+
+        return toResponseDto(verifiedUserWithQueryDsl(userId));
     }
 
     public PageResponseDto gets(Pageable pageable) {
@@ -49,7 +50,7 @@ public class UserService {
 
     public UserResponseDto patch(UserPatchDto userPatchDto, Long userId) {
 
-        User user = verifiedUser(userId);
+        User user = verifiedUserWithQueryDsl(userId);
 
         Optional.ofNullable(userPatchDto.getName())
                 .ifPresent(user::setName);
@@ -68,13 +69,23 @@ public class UserService {
         return toResponseDto(save);
     }
 
+    public void delete(Long userId) {
+        userRepository.deleteById(userId);
+    }
 
 
-    private User verifiedUser(Long userId) {
+    public User verifiedUser(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
 
-        User user = optionalUser.orElseThrow(
+        return optionalUser.orElseThrow(
                 () -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    public User verifiedUserWithQueryDsl(Long userId){
+        User user = userRepository.findByIdWithQueryDsl(userId);
+        if (user == null){
+            throw new BusinessException(ErrorCode.USER_NOT_FOUND);
+        }
         return user;
     }
 

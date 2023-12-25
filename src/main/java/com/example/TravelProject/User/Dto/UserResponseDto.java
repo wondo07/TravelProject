@@ -1,5 +1,7 @@
 package com.example.TravelProject.User.Dto;
 
+import com.example.TravelProject.Comment.Dto.CommentResponseDto;
+import com.example.TravelProject.CourseLike.Dto.CourseLikeResponseDto;
 import com.example.TravelProject.Enum.UserStatus;
 import com.example.TravelProject.User.Entity.User;
 import lombok.AllArgsConstructor;
@@ -8,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -28,6 +31,10 @@ public class UserResponseDto {
     private LocalDateTime modifiedAt;
 
     private Integer likeCount;
+
+    private List<CommentResponseDto> commentResponseDtos;
+
+    private List<CourseLikeResponseDto> courseLikeResponseDtos;
 
     public UserResponseDto(User user) {
         this.name = user.getName();
